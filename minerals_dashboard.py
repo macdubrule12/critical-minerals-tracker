@@ -2,7 +2,35 @@ import streamlit as st
 #
 # Page config - must be first!
 st.set_page_config(page_title="Critical Minerals Tracker", page_icon="🔋", layout="wide")
-
+# ClearPath brand styling
+st.markdown("""
+<style>
+    /* Main header */
+    .stApp h1 {
+        color: #193D69;
+    }
+    
+    /* Sidebar */
+    [data-testid="stSidebar"] {
+        background-color: #193D69;
+    }
+    
+    [data-testid="stSidebar"] * {
+        color: white !important;
+    }
+    
+    /* Info boxes (relevance tags) */
+    .stAlert {
+        background-color: #EFEFEF;
+        border-left-color: #9D1C20;
+    }
+    
+    /* Metric styling */
+    [data-testid="stMetricValue"] {
+        color: #193D69;
+    }
+</style>
+""", unsafe_allow_html=True)
 # Fake news data
 news_items = [
     {"mineral": "Lithium", "headline": "New lithium deposit found in Nevada", "source": "Reuters", "date": "Dec 16, 2025", "relevance": "Domestic supply"},
