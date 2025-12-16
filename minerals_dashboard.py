@@ -1,10 +1,16 @@
 import streamlit as st
+from news_fetcher import fetch_news
 #
 # Page config - must be first!
 st.set_page_config(page_title="Critical Minerals Tracker", page_icon="🔋", layout="wide")
-# ClearPath brand styling
+# ClearPath brand styling - light theme
 st.markdown("""
 <style>
+    /* White background */
+    .stApp {
+        background-color: #FFFFFF;
+    }
+    
     /* Main header */
     .stApp h1 {
         color: #193D69;
@@ -19,38 +25,31 @@ st.markdown("""
         color: white !important;
     }
     
-    /* Info boxes (relevance tags) */
-    .stAlert {
-        background-color: #EFEFEF;
-        border-left-color: #9D1C20;
+    /* Subheaders */
+    h2, h3 {
+        color: #193D69;
     }
     
-    /* Metric styling */
-    [data-testid="stMetricValue"] {
-        color: #193D69;
+    /* Links */
+    a {
+        color: #9D1C20 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 # Fake news data
-news_items = [
-    {"mineral": "Lithium", "headline": "New lithium deposit found in Nevada", "source": "Reuters", "date": "Dec 16, 2025", "relevance": "Domestic supply"},
-    {"mineral": "Cobalt", "headline": "Congo cobalt exports hit record high", "source": "Bloomberg", "date": "Dec 15, 2025", "relevance": "Supply chain"},
-    {"mineral": "Rare Earths", "headline": "DOE announces rare earth processing grant", "source": "E&E News", "date": "Dec 15, 2025", "relevance": "DOE policy"},
-    {"mineral": "Lithium", "headline": "Tesla signs lithium supply deal", "source": "WSJ", "date": "Dec 14, 2025", "relevance": "Industry"},
-    {"mineral": "Nickel", "headline": "Indonesia nickel ban impacts EV market", "source": "Financial Times", "date": "Dec 14, 2025", "relevance": "Trade policy"},
-    {"mineral": "Copper", "headline": "Arizona copper mine receives permit approval", "source": "Mining Weekly", "date": "Dec 13, 2025", "relevance": "Permitting"},
-    {"mineral": "Graphite", "headline": "US graphite facility breaks ground in Louisiana", "source": "S&P Global", "date": "Dec 12, 2025", "relevance": "Domestic supply"},
-]
+news_items = fetch_news()
 
 # SIDEBAR - filters go here
 st.sidebar.title("🔋 Filters")
-minerals = ["All"] + sorted(list(set([item["mineral"] for item in news_items])))
+minerals = ["All", "Lithium", "Cobalt", "Nickel", "Copper", "Rare Earth", "Graphite"]
 selected_mineral = st.sidebar.selectbox("Mineral:", minerals)
 
 sources = ["All"] + sorted(list(set([item["source"] for item in news_items])))
 selected_source = st.sidebar.selectbox("Source:", sources)
 
 # MAIN AREA
+st.image("https://clearpath.org/wp-content/themes/theme starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter starter/assets/images/logo.svg", width=200)
+st.image("https://clearpath.org/wp-content/uploads/sites/44/2023/08/clearpath-logo.png", width=200)
 st.title("Critical Minerals News Tracker")
 st.write("Daily intelligence for ClearPath policy team")
 
@@ -70,7 +69,6 @@ for item in filtered:
     col1, col2 = st.columns([3, 1])
     with col1:
         st.subheader(item["headline"])
-        st.caption(f"🏷️ {item['mineral']} | 📰 {item['source']} | 📅 {item['date']}")
-    with col2:
-        st.info(item["relevance"])
-    st.divider()
+        st.caption(f"🔋 {item['mineral']} | 📰 {item['source']} | 📅 {item['date']}")
+        st.markdown(f"[Read more]({item['link']})")
+    st.divider() 
